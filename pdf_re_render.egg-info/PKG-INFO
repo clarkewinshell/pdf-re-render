@@ -1,0 +1,82 @@
+Metadata-Version: 2.4
+Name: pdf-re-render
+Version: 0.1.0
+Summary: Python GUI tool to re-render PDFs using Ghostscript to remove restriction flags.
+Author: clarkewinshell
+License: MIT
+Project-URL: Homepage, https://github.com/clarkewinshell/pdf-re-render
+Project-URL: Source, https://github.com/clarkewinshell/pdf-re-render
+Project-URL: Issues, https://github.com/clarkewinshell/pdf-re-render/issues
+Requires-Python: >=3.8
+Requires-Dist: ghostscript>=0.7
+Requires-Dist: PyPDF2>=3.0
+
+# PDF Re-Render
+
+<img src="assets/screenshot.png">
+
+A small GUI tool that re-renders PDF files using Ghostscript to remove restriction flags (printing/copying restrictions) by producing a new PDF output with pdf compression.
+
+> Note: This tool does not bypass password-protected PDFs that require an owner/user password to open. If a PDF is encrypted with a user password, Ghostscript cannot bypass that.
+
+**Prerequisites**
+- Python 3.8 or newer
+- Ghostscript installed on your system and available on `PATH` (the `ghostscript` Python package acts as a wrapper around the system Ghostscript binary)
+  - Windows installers: https://www.ghostscript.com/download/gsdnld.html
+  - After installing on Windows, make sure the Ghostscript `bin` folder (e.g., `C:\Program Files\gs\gs9.##\bin`) is in your `PATH`.
+
+**Dependencies**
+- `ghostscript` (Python wrapper)
+- `PyPDF2`
+
+These are declared in `pyproject.toml` and can be installed via `pip`.
+
+**Install dependencies (quick)**
+
+PowerShell:
+
+```powershell
+python -m pip install --upgrade pip
+pip install ghostscript PyPDF2
+```
+
+Or, if you prefer to install from the provided `requirement.txt`:
+
+```powershell
+pip install -r .\requirement.txt
+```
+
+**Run the GUI**
+
+From the project root run:
+
+```powershell
+python .\main.py
+```
+
+The app provides two modes:
+- Single file: select an input PDF and an output path.
+- Batch mode: select multiple PDFs and an output folder. Each re-rendered file will be saved with a `_no_restrictions.pdf` suffix.
+
+Choose quality (High/Medium/Low) before re-rendering.
+
+**Packaging**
+
+To build a wheel or sdist (requires `build`):
+
+```powershell
+pip install build
+python -m build
+```
+
+**Notes & Troubleshooting**
+- If Ghostscript isn't installed or not on `PATH`, the `ghostscript` Python wrapper will raise errors at run-time — install Ghostscript and add its `bin` directory to your system `PATH`.
+- The tool will fail on PDFs that require a password to open (not just restricted PDFs). The app checks for encryption and alerts the user.
+- This project is provided as-is. Make sure to respect copyright and licensing when re-processing PDFs.
+
+**License**
+
+MIT (see `pyproject.toml`)
+
+**Want more?**
+If you want a command-line entry point (so `pip install .` makes a `pdf-re-render` command), I can add a `project.scripts` entry to `pyproject.toml` and a small wrapper function.
